@@ -1,0 +1,60 @@
+﻿@model Nemesys.ViewModels.ReportViewModel
+
+@{
+    ViewData["Title"] = "Edit Report";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form asp-action="Edit" method="post" role="form" enctype="multipart/form-data">
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="form-group">
+        <label asp-for="DateOfReport" class="col-md-2"></label>
+        <div class="col-md-5">
+            <input asp-for="DateOfReport" class="form-control" />
+            <span asp-validation-for="DateOfReport" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="Title" class="col-md-2"></label>
+        <div class="col-md-5">
+            <input asp-for="Title" class="form-control" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="Content" class="col-md-2"></label>
+        <div class="col-md-5">
+            <textarea asp-for="Content" class="form-control"></textarea>
+            <span asp-validation-for="Content" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="ImageUrl" class="col-md-2"></label>
+        <div class="col-md-5">
+            <input asp-for="ImageUrl" class="form-control" />
+            <span asp-validation-for="ImageUrl" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="Upvotes" class="col-md-2"></label>
+        <div class="col-md-5">
+            <input asp-for="Upvotes" class="form-control" />
+            <span asp-validation-for="Upvotes" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-5">
+            <input type="hidden" asp-for="Id" />
+            <input type="submit" class="btn btn-primary" value="Save Changes" />
+            <a asp-controller="Reports" asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
