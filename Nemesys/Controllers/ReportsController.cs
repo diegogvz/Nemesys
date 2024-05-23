@@ -30,7 +30,11 @@ public class ReportsController : Controller
                     Id = r.ReportID,
                     DateOfReport = r.DateOfReport,
                     Title = r.Title,
-                    Content = r.Content,
+                    Location = r.Location,
+                    HazardDateTime = r.HazardDateTime,
+                    HazardType = r.HazardType,
+                    Description = r.Description,
+                    Status = r.Status,
                     ImageUrl = r.ImageUrl,
                     Upvotes = r.Upvotes
                 }).ToList()
@@ -58,7 +62,11 @@ public class ReportsController : Controller
                 Id = report.ReportID,
                 DateOfReport = report.DateOfReport,
                 Title = report.Title,
-                Content = report.Content,
+                Location = report.Location,
+                HazardDateTime = report.HazardDateTime,
+                HazardType = report.HazardType,
+                Description = report.Description,
+                Status = report.Status,
                 ImageUrl = report.ImageUrl,
                 Upvotes = report.Upvotes
             };
@@ -80,7 +88,7 @@ public class ReportsController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Create([Bind("DateOfReport, Title, Content, ImageUrl, Upvotes")] ReportViewModel newReport)
+    public IActionResult Create([Bind("DateOfReport, Title, Location, HazardDateTime, HazardType, Description, Status, ImageUrl, Upvotes")] ReportViewModel newReport)
     {
         try
         {
@@ -90,7 +98,11 @@ public class ReportsController : Controller
                 {
                     DateOfReport = newReport.DateOfReport,
                     Title = newReport.Title,
-                    Content = newReport.Content,
+                    Location = newReport.Location,
+                    HazardDateTime = newReport.HazardDateTime,
+                    HazardType = newReport.HazardType,
+                    Description = newReport.Description,
+                    Status = newReport.Status,
                     ImageUrl = newReport.ImageUrl,
                     Upvotes = newReport.Upvotes
                 };
@@ -122,7 +134,11 @@ public class ReportsController : Controller
                 Id = report.ReportID,
                 DateOfReport = report.DateOfReport,
                 Title = report.Title,
-                Content = report.Content,
+                Location = report.Location,
+                HazardDateTime = report.HazardDateTime,
+                HazardType = report.HazardType,
+                Description = report.Description,
+                Status = report.Status,
                 ImageUrl = report.ImageUrl,
                 Upvotes = report.Upvotes
             };
@@ -150,7 +166,11 @@ public class ReportsController : Controller
 
                 report.DateOfReport = updatedReport.DateOfReport;
                 report.Title = updatedReport.Title;
-                report.Content = updatedReport.Content;
+                report.Location = updatedReport.Location;
+                report.HazardDateTime = updatedReport.HazardDateTime;
+                report.HazardType = updatedReport.HazardType;
+                report.Description = updatedReport.Description;
+                report.Status = updatedReport.Status;
                 report.ImageUrl = updatedReport.ImageUrl;
                 report.Upvotes = updatedReport.Upvotes;
 

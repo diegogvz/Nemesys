@@ -15,12 +15,28 @@ namespace Nemesys.ViewModels
         [Display(Name = "Title")]
         public string Title { get; set; }
 
-        [Display(Name = "Image URL")]
-        public string ImageUrl { get; set; }
+        [Required]
+        [Display(Name = "Location")]
+        public string Location { get; set; }
 
         [Required]
-        [Display(Name = "Content")]
-        public string Content { get; set; }
+        [Display(Name = "Hazard Date and Time")]
+        public DateTime HazardDateTime { get; set; }
+
+        [Required]
+        [Display(Name = "Hazard Type")]
+        public string HazardType { get; set; }
+
+        [Required]
+        [Display(Name = "Description")]
+        public string Description { get; set; }
+
+        [Required]
+        [Display(Name = "Status")]
+        public string Status { get; set; }
+
+        [Display(Name = "Image URL")]
+        public string ImageUrl { get; set; }
 
         [Required]
         public int Upvotes { get; set; }

@@ -23,16 +23,40 @@
             @Model.Title
         </dd>
         <dt class="col-sm-2">
+            Location
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Location
+        </dd>
+        <dt class="col-sm-2">
+            Date of Hazard
+        </dt>
+        <dd class="col-sm-10">
+            @Model.HazardDateTime.ToShortDateString()
+        </dd>
+        <dt class="col-sm-2">
+            Hazard Type
+        </dt>
+        <dd class="col-sm-10">
+            @Model.HazardType
+        </dd>
+        <dt class="col-sm-2">
+            Description
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Description
+        </dd>
+        <dt class="col-sm-2">
+            Status
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Status
+        </dd>
+        <dt class="col-sm-2">
             Image
         </dt>
         <dd class="col-sm-10">
             <img src="@Model.ImageUrl" alt="Image for @Model.Title" />
-        </dd>
-        <dt class="col-sm-2">
-            Content
-        </dt>
-        <dd class="col-sm-10">
-            @Model.Content
         </dd>
         <dt class="col-sm-2">
             Upvotes

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Nemesys.Data;
 
@@ -11,9 +12,10 @@ using Nemesys.Data;
 namespace Nemesys.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240523092044_initial")]
+    partial class initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,29 +32,14 @@ namespace Nemesys.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReportID"), 1L, 1);
 
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("DateOfReport")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("HazardDateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("HazardType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Location")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -71,39 +58,27 @@ namespace Nemesys.Data.Migrations
                         new
                         {
                             ReportID = 1,
-                            DateOfReport = new DateTime(2024, 5, 23, 12, 36, 10, 585, DateTimeKind.Local).AddTicks(587),
-                            Description = "Content of Report 1",
-                            HazardDateTime = new DateTime(2024, 5, 20, 12, 36, 10, 585, DateTimeKind.Local).AddTicks(627),
-                            HazardType = "Unsafe Act",
+                            Content = "Content of Report 1",
+                            DateOfReport = new DateTime(2024, 5, 23, 11, 20, 44, 775, DateTimeKind.Local).AddTicks(3936),
                             ImageUrl = "C:\\Users\\34722\\Pictures\\501_maradona.jpg",
-                            Location = "Building A",
-                            Status = "Open",
                             Title = "Report 1",
                             Upvotes = 5
                         },
                         new
                         {
                             ReportID = 2,
-                            DateOfReport = new DateTime(2024, 5, 22, 12, 36, 10, 585, DateTimeKind.Local).AddTicks(631),
-                            Description = "Content of Report 2",
-                            HazardDateTime = new DateTime(2024, 5, 19, 12, 36, 10, 585, DateTimeKind.Local).AddTicks(634),
-                            HazardType = "Unsafe Condition",
+                            Content = "Content of Report 2",
+                            DateOfReport = new DateTime(2024, 5, 22, 11, 20, 44, 775, DateTimeKind.Local).AddTicks(3985),
                             ImageUrl = "C:\\Users\\34722\\Pictures\\501_maradona.jpg",
-                            Location = "Building B",
-                            Status = "Closed",
                             Title = "Report 2",
                             Upvotes = 10
                         },
                         new
                         {
                             ReportID = 3,
-                            DateOfReport = new DateTime(2024, 5, 21, 12, 36, 10, 585, DateTimeKind.Local).AddTicks(637),
-                            Description = "Content of Report 3",
-                            HazardDateTime = new DateTime(2024, 5, 18, 12, 36, 10, 585, DateTimeKind.Local).AddTicks(639),
-                            HazardType = "Unsafe Equipment",
+                            Content = "Content of Report 3",
+                            DateOfReport = new DateTime(2024, 5, 21, 11, 20, 44, 775, DateTimeKind.Local).AddTicks(3989),
                             ImageUrl = "C:\\Users\\34722\\Pictures\\501_maradona.jpg",
-                            Location = "Building C",
-                            Status = "In Progress",
                             Title = "Report 3",
                             Upvotes = 7
                         });
