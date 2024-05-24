@@ -72,7 +72,7 @@ public class RegisterModel : PageModel
 
     public async Task OnGetAsync(string returnUrl = null)
     {
-        ReturnUrl = returnUrl;
+        ReturnUrl = returnUrl ?? Url.Content("~/");
         ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         Roles = _roleManager.Roles.Select(r => new SelectListItem
         {
@@ -85,6 +85,7 @@ public class RegisterModel : PageModel
     {
         returnUrl ??= Url.Content("~/");
         ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
         if (ModelState.IsValid)
         {
             var user = CreateUser();
@@ -127,6 +128,16 @@ public class RegisterModel : PageModel
             foreach (var error in result.Errors)
             {
                 ModelState.AddModelError(string.Empty, error.Description);
+            }
+        }
+
+        // Log the validation errors
+        foreach (var key in ModelState.Keys)
+        {
+            var state = ModelState[key];
+            foreach (var error in state.Errors)
+            {
+                _logger.LogError($"Validation error in {key}: {error.ErrorMessage}");
             }
         }
 
