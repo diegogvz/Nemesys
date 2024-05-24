@@ -49,13 +49,13 @@ public class RegisterModel : PageModel
 
     public class InputModel
     {
-        [Required]
-        [EmailAddress]
+        [Required(ErrorMessage = "The email field is required.")]
+        [EmailAddress(ErrorMessage = "Invalid email address.")]
         [Display(Name = "Email")]
         public string Email { get; set; }
 
-        [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+        [Required(ErrorMessage = "The password field is required.")]
+        [StringLength(100, ErrorMessage = "The password must be at least {2} and at most {1} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
@@ -65,10 +65,11 @@ public class RegisterModel : PageModel
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "The role field is required.")]
         [Display(Name = "Role")]
         public string SelectedRole { get; set; }
     }
+
 
     public async Task OnGetAsync(string returnUrl = null)
     {
