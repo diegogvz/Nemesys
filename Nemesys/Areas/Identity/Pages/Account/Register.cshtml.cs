@@ -54,6 +54,10 @@ public class RegisterModel : PageModel
         [Display(Name = "Email")]
         public string Email { get; set; }
 
+        [Required(ErrorMessage = "The Author Name field is required.")]
+        [Display(Name = "Author Name")]
+        public string AuthorName { get; set; }
+
         [Required(ErrorMessage = "The password field is required.")]
         [StringLength(100, ErrorMessage = "The password must be at least {2} and at most {1} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
@@ -69,7 +73,6 @@ public class RegisterModel : PageModel
         [Display(Name = "Role")]
         public string SelectedRole { get; set; }
     }
-
 
     public async Task OnGetAsync(string returnUrl = null)
     {
@@ -93,6 +96,7 @@ public class RegisterModel : PageModel
 
             await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
             await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+            user.AuthorName = Input.AuthorName; // Asignar AuthorName
             var result = await _userManager.CreateAsync(user, Input.Password);
 
             if (result.Succeeded)

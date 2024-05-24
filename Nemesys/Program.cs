@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using Nemesys.Data;
 using Nemesys.Models;
+using Nemesys.Data;
 
 namespace Nemesys
 {

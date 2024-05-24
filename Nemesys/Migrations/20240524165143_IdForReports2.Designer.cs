@@ -9,17 +9,17 @@ using Nemesys.Data;
 
 #nullable disable
 
-namespace Nemesys.Data.Migrations
+namespace Nemesys.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240523164101_AuthorName")]
-    partial class AuthorName
+    [Migration("20240524165143_IdForReports2")]
+    partial class IdForReports2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.26")
+                .HasAnnotation("ProductVersion", "6.0.29")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -225,7 +225,13 @@ namespace Nemesys.Data.Migrations
                     b.Property<int>("Upvotes")
                         .HasColumnType("int");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("ReportID");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Reports");
 
@@ -233,41 +239,44 @@ namespace Nemesys.Data.Migrations
                         new
                         {
                             ReportID = 1,
-                            DateOfReport = new DateTime(2024, 5, 23, 18, 41, 0, 480, DateTimeKind.Local).AddTicks(5063),
+                            DateOfReport = new DateTime(2024, 5, 24, 18, 51, 42, 784, DateTimeKind.Local).AddTicks(5091),
                             Description = "Content of Report 1",
-                            HazardDateTime = new DateTime(2024, 5, 20, 18, 41, 0, 480, DateTimeKind.Local).AddTicks(5127),
+                            HazardDateTime = new DateTime(2024, 5, 21, 18, 51, 42, 784, DateTimeKind.Local).AddTicks(5129),
                             HazardType = "Unsafe Act",
                             ImageUrl = "C:\\Users\\34722\\Pictures\\501_maradona.jpg",
                             Location = "Building A",
                             Status = "Open",
                             Title = "Report 1",
-                            Upvotes = 5
+                            Upvotes = 5,
+                            UserId = "1"
                         },
                         new
                         {
                             ReportID = 2,
-                            DateOfReport = new DateTime(2024, 5, 22, 18, 41, 0, 480, DateTimeKind.Local).AddTicks(5133),
+                            DateOfReport = new DateTime(2024, 5, 23, 18, 51, 42, 784, DateTimeKind.Local).AddTicks(5135),
                             Description = "Content of Report 2",
-                            HazardDateTime = new DateTime(2024, 5, 19, 18, 41, 0, 480, DateTimeKind.Local).AddTicks(5140),
+                            HazardDateTime = new DateTime(2024, 5, 20, 18, 51, 42, 784, DateTimeKind.Local).AddTicks(5135),
                             HazardType = "Unsafe Condition",
                             ImageUrl = "C:\\Users\\34722\\Pictures\\501_maradona.jpg",
                             Location = "Building B",
                             Status = "Closed",
                             Title = "Report 2",
-                            Upvotes = 10
+                            Upvotes = 10,
+                            UserId = "1"
                         },
                         new
                         {
                             ReportID = 3,
-                            DateOfReport = new DateTime(2024, 5, 21, 18, 41, 0, 480, DateTimeKind.Local).AddTicks(5146),
+                            DateOfReport = new DateTime(2024, 5, 22, 18, 51, 42, 784, DateTimeKind.Local).AddTicks(5142),
                             Description = "Content of Report 3",
-                            HazardDateTime = new DateTime(2024, 5, 18, 18, 41, 0, 480, DateTimeKind.Local).AddTicks(5152),
+                            HazardDateTime = new DateTime(2024, 5, 19, 18, 51, 42, 784, DateTimeKind.Local).AddTicks(5142),
                             HazardType = "Unsafe Equipment",
                             ImageUrl = "C:\\Users\\34722\\Pictures\\501_maradona.jpg",
                             Location = "Building C",
                             Status = "In Progress",
                             Title = "Report 3",
-                            Upvotes = 7
+                            Upvotes = 7,
+                            UserId = "1"
                         });
                 });
 
@@ -344,16 +353,16 @@ namespace Nemesys.Data.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            AuthorName = "Diego",
-                            ConcurrencyStamp = "1640e630-7325-4710-8679-2243f3266e36",
+                            AuthorName = "Admin User",
+                            ConcurrencyStamp = "63dec3e6-61d7-4216-8e7a-df6e60c53539",
                             Email = "admin@mail.com",
-                            EmailConfirmed = true,
+                            EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@MAIL.COM",
                             NormalizedUserName = "ADMIN@MAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAECanUmHfsittOS8DD/5XkF2lxbgZKRUxt9ON7hjYS5Ia1fxSS866qRUUK/xu5lQStw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEB8id/5/v6oKqJzOyxGi2aDYVfUyFqSJLaarZO7eIvvGC7H4xq8gCTl2pcRrRAI7Mw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "e7302e35-a504-4d17-a6e5-8d365650c60e",
+                            SecurityStamp = "7c7928fa-09d8-4645-a68a-dc7be4737a3a",
                             TwoFactorEnabled = false,
                             UserName = "admin@mail.com"
                         });
@@ -408,6 +417,17 @@ namespace Nemesys.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Nemesys.Models.Report", b =>
+                {
+                    b.HasOne("Nemesys.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

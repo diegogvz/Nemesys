@@ -4,7 +4,7 @@ namespace Nemesys.Models
 {
     public class User : IdentityUser
     {
-        //[PersonalData]
-        //public string AuthorName { get; set; }
+        [PersonalData]
+        public string AuthorName { get; set; }
     }
 }

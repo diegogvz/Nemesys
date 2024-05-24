@@ -3,19 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Nemesys.Data;
 
 #nullable disable
 
-namespace Nemesys.Data.Migrations
+namespace Nemesys.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240524092046_UpdatePullNoe")]
-    partial class UpdatePullNoe
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -225,7 +223,13 @@ namespace Nemesys.Data.Migrations
                     b.Property<int>("Upvotes")
                         .HasColumnType("int");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("ReportID");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Reports");
 
@@ -233,41 +237,44 @@ namespace Nemesys.Data.Migrations
                         new
                         {
                             ReportID = 1,
-                            DateOfReport = new DateTime(2024, 5, 24, 11, 20, 45, 571, DateTimeKind.Local).AddTicks(1013),
+                            DateOfReport = new DateTime(2024, 5, 24, 18, 51, 42, 784, DateTimeKind.Local).AddTicks(5091),
                             Description = "Content of Report 1",
-                            HazardDateTime = new DateTime(2024, 5, 21, 11, 20, 45, 571, DateTimeKind.Local).AddTicks(1092),
+                            HazardDateTime = new DateTime(2024, 5, 21, 18, 51, 42, 784, DateTimeKind.Local).AddTicks(5129),
                             HazardType = "Unsafe Act",
                             ImageUrl = "C:\\Users\\34722\\Pictures\\501_maradona.jpg",
                             Location = "Building A",
                             Status = "Open",
                             Title = "Report 1",
-                            Upvotes = 5
+                            Upvotes = 5,
+                            UserId = "1"
                         },
                         new
                         {
                             ReportID = 2,
-                            DateOfReport = new DateTime(2024, 5, 23, 11, 20, 45, 571, DateTimeKind.Local).AddTicks(1103),
+                            DateOfReport = new DateTime(2024, 5, 23, 18, 51, 42, 784, DateTimeKind.Local).AddTicks(5135),
                             Description = "Content of Report 2",
-                            HazardDateTime = new DateTime(2024, 5, 20, 11, 20, 45, 571, DateTimeKind.Local).AddTicks(1108),
+                            HazardDateTime = new DateTime(2024, 5, 20, 18, 51, 42, 784, DateTimeKind.Local).AddTicks(5135),
                             HazardType = "Unsafe Condition",
                             ImageUrl = "C:\\Users\\34722\\Pictures\\501_maradona.jpg",
                             Location = "Building B",
                             Status = "Closed",
                             Title = "Report 2",
-                            Upvotes = 10
+                            Upvotes = 10,
+                            UserId = "1"
                         },
                         new
                         {
                             ReportID = 3,
-                            DateOfReport = new DateTime(2024, 5, 22, 11, 20, 45, 571, DateTimeKind.Local).AddTicks(1115),
+                            DateOfReport = new DateTime(2024, 5, 22, 18, 51, 42, 784, DateTimeKind.Local).AddTicks(5142),
                             Description = "Content of Report 3",
-                            HazardDateTime = new DateTime(2024, 5, 19, 11, 20, 45, 571, DateTimeKind.Local).AddTicks(1120),
+                            HazardDateTime = new DateTime(2024, 5, 19, 18, 51, 42, 784, DateTimeKind.Local).AddTicks(5142),
                             HazardType = "Unsafe Equipment",
                             ImageUrl = "C:\\Users\\34722\\Pictures\\501_maradona.jpg",
                             Location = "Building C",
                             Status = "In Progress",
                             Title = "Report 3",
-                            Upvotes = 7
+                            Upvotes = 7,
+                            UserId = "1"
                         });
                 });
 
@@ -278,6 +285,10 @@ namespace Nemesys.Data.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
+
+                    b.Property<string>("AuthorName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -340,15 +351,16 @@ namespace Nemesys.Data.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9d3dc4c0-2744-4e90-8108-c6505bb0cf9b",
+                            AuthorName = "Admin User",
+                            ConcurrencyStamp = "63dec3e6-61d7-4216-8e7a-df6e60c53539",
                             Email = "admin@mail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@MAIL.COM",
                             NormalizedUserName = "ADMIN@MAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAELn9+Y/ULU1CZZhiP/t1+3J0xADRhlByj6jrGekqKDnDOi/eC4ONuZ9qWNBx+IB15A==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEB8id/5/v6oKqJzOyxGi2aDYVfUyFqSJLaarZO7eIvvGC7H4xq8gCTl2pcRrRAI7Mw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "23b7c664-01c7-4fb6-8f03-376cee42b2df",
+                            SecurityStamp = "7c7928fa-09d8-4645-a68a-dc7be4737a3a",
                             TwoFactorEnabled = false,
                             UserName = "admin@mail.com"
                         });
@@ -403,6 +415,17 @@ namespace Nemesys.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Nemesys.Models.Report", b =>
+                {
+                    b.HasOne("Nemesys.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

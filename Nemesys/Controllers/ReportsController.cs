@@ -1,19 +1,26 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Nemesys.Models;
 using Nemesys.ViewModels;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 public class ReportsController : Controller
 {
     private readonly IReportsRepository _reportsRepository;
     private readonly ILogger<ReportsController> _logger;
+    private readonly UserManager<User> _userManager;
 
     public ReportsController(
         IReportsRepository reportsRepository,
-        ILogger<ReportsController> logger)
+        ILogger<ReportsController> logger,
+        UserManager<User> userManager)
     {
         _reportsRepository = reportsRepository;
         _logger = logger;
+        _userManager = userManager;
     }
 
     public IActionResult Index()
@@ -81,7 +88,7 @@ public class ReportsController : Controller
         }
     }
 
-    [Authorize (Roles = "investigator")]
+    [Authorize(Roles = "investigator")]
     [HttpGet]
     public IActionResult Create()
     {
@@ -91,12 +98,18 @@ public class ReportsController : Controller
     [Authorize(Roles = "investigator")]
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Create([Bind("DateOfReport, Title, Location, HazardDateTime, HazardType, Description, ImageUrl, Upvotes")] ReportViewModel newReport)
+    public async Task<IActionResult> Create([Bind("DateOfReport,Title,Location,HazardDateTime,HazardType,Description,ImageUrl,Upvotes")] ReportViewModel newReport)
     {
         try
         {
             if (ModelState.IsValid)
             {
+                var user = await _userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    return Unauthorized();
+                }
+
                 var report = new Report
                 {
                     DateOfReport = newReport.DateOfReport,
@@ -107,7 +120,8 @@ public class ReportsController : Controller
                     Description = newReport.Description,
                     Status = "OPEN",
                     ImageUrl = newReport.ImageUrl,
-                    Upvotes = newReport.Upvotes
+                    Upvotes = newReport.Upvotes,
+                    UserId = user.Id 
                 };
 
                 _reportsRepository.CreateReport(report);

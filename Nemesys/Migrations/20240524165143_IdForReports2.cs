@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Nemesys.Data.Migrations
+namespace Nemesys.Migrations
 {
-    public partial class userMig : Migration
+    public partial class IdForReports2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -28,6 +28,7 @@ namespace Nemesys.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    AuthorName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -154,45 +155,63 @@ namespace Nemesys.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.InsertData(
-                table: "AspNetRoles",
-                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[,]
+            migrationBuilder.CreateTable(
+                name: "Reports",
+                columns: table => new
                 {
-                    { "1", "1", "reporter", "REPORTER" },
-                    { "2", "2", "investigator", "INVESTIGATOR" }
+                    ReportID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DateOfReport = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    HazardDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    HazardType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Upvotes = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reports", x => x.ReportID);
+                    table.ForeignKey(
+                        name: "FK_Reports_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { "1", "1", "reporter", "REPORTER" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { "2", "2", "investigator", "INVESTIGATOR" });
+
+            migrationBuilder.InsertData(
                 table: "AspNetUsers",
-                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "1", 0, "0ac5e2ae-b946-4eeb-aef9-3f3e69b881a4", "admin@mail.com", true, false, null, "ADMIN@MAIL.COM", "ADMIN@MAIL.COM", "AQAAAAEAACcQAAAAEPVwvYE+QM+cSGxzR86jvmuFII83s+iwB3vx/NUpvrJQbL5Cac/La0iTPXjU2NC1pw==", null, false, "352af0a7-cb16-4ee7-9487-0b7c6b0a10a0", false, "admin@mail.com" });
-
-            migrationBuilder.UpdateData(
-                table: "Reports",
-                keyColumn: "ReportID",
-                keyValue: 1,
-                columns: new[] { "DateOfReport", "HazardDateTime" },
-                values: new object[] { new DateTime(2024, 5, 23, 17, 57, 40, 75, DateTimeKind.Local).AddTicks(9671), new DateTime(2024, 5, 20, 17, 57, 40, 75, DateTimeKind.Local).AddTicks(9760) });
-
-            migrationBuilder.UpdateData(
-                table: "Reports",
-                keyColumn: "ReportID",
-                keyValue: 2,
-                columns: new[] { "DateOfReport", "HazardDateTime" },
-                values: new object[] { new DateTime(2024, 5, 22, 17, 57, 40, 75, DateTimeKind.Local).AddTicks(9773), new DateTime(2024, 5, 19, 17, 57, 40, 75, DateTimeKind.Local).AddTicks(9779) });
-
-            migrationBuilder.UpdateData(
-                table: "Reports",
-                keyColumn: "ReportID",
-                keyValue: 3,
-                columns: new[] { "DateOfReport", "HazardDateTime" },
-                values: new object[] { new DateTime(2024, 5, 21, 17, 57, 40, 75, DateTimeKind.Local).AddTicks(9793), new DateTime(2024, 5, 18, 17, 57, 40, 75, DateTimeKind.Local).AddTicks(9831) });
+                columns: new[] { "Id", "AccessFailedCount", "AuthorName", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[] { "1", 0, "Admin User", "63dec3e6-61d7-4216-8e7a-df6e60c53539", "admin@mail.com", false, false, null, "ADMIN@MAIL.COM", "ADMIN@MAIL.COM", "AQAAAAEAACcQAAAAEB8id/5/v6oKqJzOyxGi2aDYVfUyFqSJLaarZO7eIvvGC7H4xq8gCTl2pcRrRAI7Mw==", null, false, "7c7928fa-09d8-4645-a68a-dc7be4737a3a", false, "admin@mail.com" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
                 columns: new[] { "RoleId", "UserId" },
                 values: new object[] { "2", "1" });
+
+            migrationBuilder.InsertData(
+                table: "Reports",
+                columns: new[] { "ReportID", "DateOfReport", "Description", "HazardDateTime", "HazardType", "ImageUrl", "Location", "Status", "Title", "Upvotes", "UserId" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2024, 5, 24, 18, 51, 42, 784, DateTimeKind.Local).AddTicks(5091), "Content of Report 1", new DateTime(2024, 5, 21, 18, 51, 42, 784, DateTimeKind.Local).AddTicks(5129), "Unsafe Act", "C:\\Users\\34722\\Pictures\\501_maradona.jpg", "Building A", "Open", "Report 1", 5, "1" },
+                    { 2, new DateTime(2024, 5, 23, 18, 51, 42, 784, DateTimeKind.Local).AddTicks(5135), "Content of Report 2", new DateTime(2024, 5, 20, 18, 51, 42, 784, DateTimeKind.Local).AddTicks(5135), "Unsafe Condition", "C:\\Users\\34722\\Pictures\\501_maradona.jpg", "Building B", "Closed", "Report 2", 10, "1" },
+                    { 3, new DateTime(2024, 5, 22, 18, 51, 42, 784, DateTimeKind.Local).AddTicks(5142), "Content of Report 3", new DateTime(2024, 5, 19, 18, 51, 42, 784, DateTimeKind.Local).AddTicks(5142), "Unsafe Equipment", "C:\\Users\\34722\\Pictures\\501_maradona.jpg", "Building C", "In Progress", "Report 3", 7, "1" }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -232,6 +251,11 @@ namespace Nemesys.Data.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reports_UserId",
+                table: "Reports",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -252,31 +276,13 @@ namespace Nemesys.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Reports");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.UpdateData(
-                table: "Reports",
-                keyColumn: "ReportID",
-                keyValue: 1,
-                columns: new[] { "DateOfReport", "HazardDateTime" },
-                values: new object[] { new DateTime(2024, 5, 23, 12, 44, 33, 352, DateTimeKind.Local).AddTicks(6918), new DateTime(2024, 5, 20, 12, 44, 33, 352, DateTimeKind.Local).AddTicks(6957) });
-
-            migrationBuilder.UpdateData(
-                table: "Reports",
-                keyColumn: "ReportID",
-                keyValue: 2,
-                columns: new[] { "DateOfReport", "HazardDateTime" },
-                values: new object[] { new DateTime(2024, 5, 22, 12, 44, 33, 352, DateTimeKind.Local).AddTicks(6963), new DateTime(2024, 5, 19, 12, 44, 33, 352, DateTimeKind.Local).AddTicks(6963) });
-
-            migrationBuilder.UpdateData(
-                table: "Reports",
-                keyColumn: "ReportID",
-                keyValue: 3,
-                columns: new[] { "DateOfReport", "HazardDateTime" },
-                values: new object[] { new DateTime(2024, 5, 21, 12, 44, 33, 352, DateTimeKind.Local).AddTicks(6969), new DateTime(2024, 5, 18, 12, 44, 33, 352, DateTimeKind.Local).AddTicks(6969) });
         }
     }
 }
