@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Nemesys.Data;
 
@@ -11,9 +12,10 @@ using Nemesys.Data;
 namespace Nemesys.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240523170053_UpdateUserConfig")]
+    partial class UpdateUserConfig
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -231,9 +233,9 @@ namespace Nemesys.Data.Migrations
                         new
                         {
                             ReportID = 1,
-                            DateOfReport = new DateTime(2024, 5, 23, 23, 3, 4, 450, DateTimeKind.Local).AddTicks(8021),
+                            DateOfReport = new DateTime(2024, 5, 23, 19, 0, 53, 107, DateTimeKind.Local).AddTicks(6442),
                             Description = "Content of Report 1",
-                            HazardDateTime = new DateTime(2024, 5, 20, 23, 3, 4, 450, DateTimeKind.Local).AddTicks(8065),
+                            HazardDateTime = new DateTime(2024, 5, 20, 19, 0, 53, 107, DateTimeKind.Local).AddTicks(6500),
                             HazardType = "Unsafe Act",
                             ImageUrl = "C:\\Users\\34722\\Pictures\\501_maradona.jpg",
                             Location = "Building A",
@@ -244,9 +246,9 @@ namespace Nemesys.Data.Migrations
                         new
                         {
                             ReportID = 2,
-                            DateOfReport = new DateTime(2024, 5, 22, 23, 3, 4, 450, DateTimeKind.Local).AddTicks(8072),
+                            DateOfReport = new DateTime(2024, 5, 22, 19, 0, 53, 107, DateTimeKind.Local).AddTicks(6506),
                             Description = "Content of Report 2",
-                            HazardDateTime = new DateTime(2024, 5, 19, 23, 3, 4, 450, DateTimeKind.Local).AddTicks(8078),
+                            HazardDateTime = new DateTime(2024, 5, 19, 19, 0, 53, 107, DateTimeKind.Local).AddTicks(6513),
                             HazardType = "Unsafe Condition",
                             ImageUrl = "C:\\Users\\34722\\Pictures\\501_maradona.jpg",
                             Location = "Building B",
@@ -257,9 +259,9 @@ namespace Nemesys.Data.Migrations
                         new
                         {
                             ReportID = 3,
-                            DateOfReport = new DateTime(2024, 5, 21, 23, 3, 4, 450, DateTimeKind.Local).AddTicks(8078),
+                            DateOfReport = new DateTime(2024, 5, 21, 19, 0, 53, 107, DateTimeKind.Local).AddTicks(6519),
                             Description = "Content of Report 3",
-                            HazardDateTime = new DateTime(2024, 5, 18, 23, 3, 4, 450, DateTimeKind.Local).AddTicks(8084),
+                            HazardDateTime = new DateTime(2024, 5, 18, 19, 0, 53, 107, DateTimeKind.Local).AddTicks(6519),
                             HazardType = "Unsafe Equipment",
                             ImageUrl = "C:\\Users\\34722\\Pictures\\501_maradona.jpg",
                             Location = "Building C",
@@ -276,6 +278,10 @@ namespace Nemesys.Data.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
+
+                    b.Property<string>("AuthorName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -338,15 +344,16 @@ namespace Nemesys.Data.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "fb973edf-1dba-471b-9a98-f264c4999618",
+                            AuthorName = "Diego",
+                            ConcurrencyStamp = "4b2e238c-6a03-4944-a6dc-e8edbc0fcf83",
                             Email = "admin@mail.com",
-                            EmailConfirmed = false,
+                            EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@MAIL.COM",
                             NormalizedUserName = "ADMIN@MAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEC/xgJ8CXP/mNE5jB+bZNJMZsyHGVix9WD7x2+J/34LCPwF5nwLWASB2X4r6RycnQA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEIunqnV64N0M1L/tnZpzMaF5I2l0oX0L+dZieI+W048UI+4XuxxYRGOrPf1Lm31Bsg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "e4787923-bdae-48c9-a5b4-f7c208bd3768",
+                            SecurityStamp = "df001a56-329f-41cb-9645-1ed302c95d57",
                             TwoFactorEnabled = false,
                             UserName = "admin@mail.com"
                         });

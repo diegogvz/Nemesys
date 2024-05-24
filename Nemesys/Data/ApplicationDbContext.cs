@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Nemesys.Models;
 
 namespace Nemesys.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<User>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
@@ -13,8 +14,41 @@ namespace Nemesys.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            SeedRoles(modelBuilder);
+            SeedAdminUser(modelBuilder);
+            SeedReports(modelBuilder);
+        }
 
-            // Inserciones de datos de ejemplo
+        private void SeedRoles(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<IdentityRole>().HasData(
+                new IdentityRole() { Id = "1", Name = "reporter", ConcurrencyStamp = "1", NormalizedName = "REPORTER" },
+                new IdentityRole() { Id = "2", Name = "investigator", ConcurrencyStamp = "2", NormalizedName = "INVESTIGATOR" }
+            );
+        }
+
+        private void SeedAdminUser(ModelBuilder modelBuilder)
+        {
+            User adminUser = new User
+            {
+                Id = "1",
+                UserName = "admin@mail.com",
+                NormalizedUserName = "ADMIN@MAIL.COM",
+                Email = "admin@mail.com",
+                NormalizedEmail = "ADMIN@MAIL.COM",
+            };
+
+            PasswordHasher<User> passwordHasher = new PasswordHasher<User>();
+            adminUser.PasswordHash = passwordHasher.HashPassword(adminUser, "hola1234");
+            modelBuilder.Entity<User>().HasData(adminUser);
+
+            modelBuilder.Entity<IdentityUserRole<string>>().HasData(
+                new IdentityUserRole<string>() { RoleId = "2", UserId = "1" }
+            );
+        }
+
+        private void SeedReports(ModelBuilder modelBuilder)
+        {
             modelBuilder.Entity<Report>().HasData(
                 new Report
                 {
@@ -59,6 +93,3 @@ namespace Nemesys.Data
         }
     }
 }
-
-
-

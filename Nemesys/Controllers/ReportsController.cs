@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Nemesys.Models;
 using Nemesys.ViewModels;
 
@@ -80,12 +81,14 @@ public class ReportsController : Controller
         }
     }
 
+    [Authorize (Roles = "investigator")]
     [HttpGet]
     public IActionResult Create()
     {
         return View();
     }
 
+    [Authorize(Roles = "investigator")]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public IActionResult Create([Bind("DateOfReport, Title, Location, HazardDateTime, HazardType, Description, Status, ImageUrl, Upvotes")] ReportViewModel newReport)
@@ -120,6 +123,7 @@ public class ReportsController : Controller
         }
     }
 
+    [Authorize]
     [HttpGet]
     public IActionResult Edit(int id)
     {
@@ -152,6 +156,7 @@ public class ReportsController : Controller
         }
     }
 
+    [Authorize]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public IActionResult Edit(ReportViewModel updatedReport)
@@ -187,6 +192,7 @@ public class ReportsController : Controller
         }
     }
 
+    [Authorize]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public IActionResult DeleteConfirmed(int id)
