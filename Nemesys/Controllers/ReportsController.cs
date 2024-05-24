@@ -35,7 +35,7 @@ public class ReportsController : Controller
                     HazardDateTime = r.HazardDateTime,
                     HazardType = r.HazardType,
                     Description = r.Description,
-                    Status = r.Status,
+                    Status = "OPEN",
                     ImageUrl = r.ImageUrl,
                     Upvotes = r.Upvotes
                 }).ToList()
@@ -85,13 +85,13 @@ public class ReportsController : Controller
     [HttpGet]
     public IActionResult Create()
     {
-        return View();
+        return View(new ReportViewModel());
     }
 
     [Authorize(Roles = "investigator")]
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Create([Bind("DateOfReport, Title, Location, HazardDateTime, HazardType, Description, Status, ImageUrl, Upvotes")] ReportViewModel newReport)
+    public IActionResult Create([Bind("DateOfReport, Title, Location, HazardDateTime, HazardType, Description, ImageUrl, Upvotes")] ReportViewModel newReport)
     {
         try
         {
@@ -105,7 +105,7 @@ public class ReportsController : Controller
                     HazardDateTime = newReport.HazardDateTime,
                     HazardType = newReport.HazardType,
                     Description = newReport.Description,
-                    Status = newReport.Status,
+                    Status = "OPEN",
                     ImageUrl = newReport.ImageUrl,
                     Upvotes = newReport.Upvotes
                 };

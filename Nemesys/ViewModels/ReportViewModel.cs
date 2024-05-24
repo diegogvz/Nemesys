@@ -9,7 +9,7 @@
         public DateTime HazardDateTime { get; set; }
         public string HazardType { get; set; }
         public string Description { get; set; }
-        public string Status { get; set; }
+        public string Status { get; set; } = "OPEN";
         public string ImageUrl { get; set; }
         public int Upvotes { get; set; }
     }
