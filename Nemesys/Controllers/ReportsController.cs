@@ -5,6 +5,7 @@ using Nemesys.Models;
 using Nemesys.ViewModels;
 using System;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 public class ReportsController : Controller
@@ -147,6 +148,14 @@ public class ReportsController : Controller
             if (report == null)
                 return NotFound();
 
+            var userId = _userManager.GetUserId(User);
+            if (report.UserId != userId)
+            {
+                return RedirectToAction("AccessDenied", new { message = "You can only edit reports created by yourself" });
+
+            }
+
+
             var model = new ReportViewModel
             {
                 Id = report.ReportID,
@@ -219,6 +228,12 @@ public class ReportsController : Controller
                 return NotFound();
             }
 
+            var userId = _userManager.GetUserId(User);
+            if (report.UserId != userId)
+            {
+                return RedirectToAction("AccessDenied", new { message = "You can only delete reports created by yourself" });
+            }
+
             _reportsRepository.DeleteReport(id);
             return RedirectToAction("Index");
         }
@@ -227,5 +242,9 @@ public class ReportsController : Controller
             _logger.LogError(ex.Message, ex);
             return View("Error");
         }
+    }
+    public ActionResult AccessDenied(string message)
+    {
+        return View("AccessDenied", (object)message);
     }
 }
