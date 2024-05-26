@@ -12,5 +12,7 @@
         public string Status { get; set; } = "OPEN";
         public string ImageUrl { get; set; }
         public int Upvotes { get; set; }
+
+        public InvestigationViewModel? Investigation { get; set; }
     }
 }

@@ -1,0 +1,53 @@
+﻿@model Nemesys.ViewModels.InvestigationViewModel
+
+@{
+    ViewData["Title"] = "Create Investigation";
+}
+
+<h2>Create Investigation</h2>
+
+<form asp-action="Create">
+    <div class="form-group">
+        <label asp-for="Description" class="control-label"></label>
+        <input asp-for="Description" class="form-control" />
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="DateOfAction" class="control-label"></label>
+        <input asp-for="DateOfAction" class="form-control" />
+        <span asp-validation-for="DateOfAction" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="InvestigatorEmail" class="control-label"></label>
+        <input asp-for="InvestigatorEmail" class="form-control" />
+        <span asp-validation-for="InvestigatorEmail" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="InvestigatorPhone" class="control-label"></label>
+        <input asp-for="InvestigatorPhone" class="form-control" />
+        <span asp-validation-for="InvestigatorPhone" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Status" class="control-label"></label>
+        <select asp-for="Status" class="form-control">
+            <option value="OPEN">Open</option>
+            <option value="CLOSED">Closed</option>
+            <option value="BEING INVESTIGATED">Being Investigated</option>
+            <option value="NO ACTION REQUIRED">No Action Required</option>
+        </select>
+        <span asp-validation-for="Status" class="text-danger"></span>
+    </div>
+    <input type="hidden" asp-for="ReportID" />
+    <input type="hidden" asp-for="InvestigatorDetails" value="@User.Identity.Name" /> 
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
+
+<div>
+    <a asp-action="Details" asp-controller="Reports" asp-route-id="@Model.ReportID">Back to Report</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

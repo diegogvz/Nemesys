@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Nemesys.Data;
 
@@ -11,9 +12,10 @@ using Nemesys.Data;
 namespace Nemesys.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240526091238_AddInvestigation")]
+    partial class AddInvestigation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -275,9 +277,9 @@ namespace Nemesys.Migrations
                         new
                         {
                             ReportID = 1,
-                            DateOfReport = new DateTime(2024, 5, 26, 13, 52, 41, 47, DateTimeKind.Local).AddTicks(8683),
+                            DateOfReport = new DateTime(2024, 5, 26, 11, 12, 37, 913, DateTimeKind.Local).AddTicks(2418),
                             Description = "Content of Report 1",
-                            HazardDateTime = new DateTime(2024, 5, 23, 13, 52, 41, 47, DateTimeKind.Local).AddTicks(8734),
+                            HazardDateTime = new DateTime(2024, 5, 23, 11, 12, 37, 913, DateTimeKind.Local).AddTicks(2469),
                             HazardType = "Unsafe Act",
                             ImageUrl = "C:\\Users\\34722\\Pictures\\501_maradona.jpg",
                             Location = "Building A",
@@ -289,9 +291,9 @@ namespace Nemesys.Migrations
                         new
                         {
                             ReportID = 2,
-                            DateOfReport = new DateTime(2024, 5, 25, 13, 52, 41, 47, DateTimeKind.Local).AddTicks(8740),
+                            DateOfReport = new DateTime(2024, 5, 25, 11, 12, 37, 913, DateTimeKind.Local).AddTicks(2476),
                             Description = "Content of Report 2",
-                            HazardDateTime = new DateTime(2024, 5, 22, 13, 52, 41, 47, DateTimeKind.Local).AddTicks(8740),
+                            HazardDateTime = new DateTime(2024, 5, 22, 11, 12, 37, 913, DateTimeKind.Local).AddTicks(2482),
                             HazardType = "Unsafe Condition",
                             ImageUrl = "C:\\Users\\34722\\Pictures\\501_maradona.jpg",
                             Location = "Building B",
@@ -303,9 +305,9 @@ namespace Nemesys.Migrations
                         new
                         {
                             ReportID = 3,
-                            DateOfReport = new DateTime(2024, 5, 24, 13, 52, 41, 47, DateTimeKind.Local).AddTicks(8746),
+                            DateOfReport = new DateTime(2024, 5, 24, 11, 12, 37, 913, DateTimeKind.Local).AddTicks(2488),
                             Description = "Content of Report 3",
-                            HazardDateTime = new DateTime(2024, 5, 21, 13, 52, 41, 47, DateTimeKind.Local).AddTicks(8753),
+                            HazardDateTime = new DateTime(2024, 5, 21, 11, 12, 37, 913, DateTimeKind.Local).AddTicks(2488),
                             HazardType = "Unsafe Equipment",
                             ImageUrl = "C:\\Users\\34722\\Pictures\\501_maradona.jpg",
                             Location = "Building C",
@@ -390,15 +392,15 @@ namespace Nemesys.Migrations
                             Id = "1",
                             AccessFailedCount = 0,
                             AuthorName = "Admin User",
-                            ConcurrencyStamp = "fdfe7b40-73c1-4350-acaa-4477b268ff7c",
+                            ConcurrencyStamp = "4dfc6215-bd91-480a-9baa-900694453f57",
                             Email = "admin@mail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@MAIL.COM",
                             NormalizedUserName = "ADMIN@MAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAED9sDznmtZy6jYYLvPktHregVKygDDPvb3jFzPFlkgNz7Mw7AG0MNhMO80Be1H/ycQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEHebV3yqZ3DY6dJNEo7QvRdau5Z7bhjNgAVhWAw5l+qBiTsjCmkY5XQIbN+Lt6C7Ew==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "7531aa5b-2065-4161-8148-c1bd66c43aa3",
+                            SecurityStamp = "e4d17ba6-1fa7-48e8-a25d-5c6a27f02d69",
                             TwoFactorEnabled = false,
                             UserName = "admin@mail.com"
                         });
@@ -479,7 +481,8 @@ namespace Nemesys.Migrations
 
             modelBuilder.Entity("Nemesys.Models.Report", b =>
                 {
-                    b.Navigation("Investigation");
+                    b.Navigation("Investigation")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

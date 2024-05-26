@@ -3,10 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Nemesys.Models;
 using Nemesys.Data;
+using Nemesys.Models.Repositories;
 
 namespace Nemesys
 {
-    public class Program
+    public class Programa
     {
         public static void Main(string[] args)
         {
@@ -20,9 +21,6 @@ namespace Nemesys
             builder.Services.AddDefaultIdentity<User>(options =>
             {
                 //Password policy
-                //options.Password.RequireDigit = true;
-                //options.Password.RequireLowercase = true;
-                //options.Password.RequireNonAlphanumeric = true;
                 options.Password.RequiredLength = 8;
 
                 //Lockout policy
@@ -42,10 +40,11 @@ namespace Nemesys
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+            // Register the ReportsRepository and InvestigationsRepository services
             builder.Services.AddScoped<IReportsRepository, ReportsRepository>();
-            builder.Services.AddControllersWithViews();
+            builder.Services.AddScoped<IInvestigationsRepository, InvestigationsRepository>(); // Registro del servicio
 
-            
+            builder.Services.AddControllersWithViews();
 
             var app = builder.Build();
 

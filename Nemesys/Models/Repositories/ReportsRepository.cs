@@ -1,4 +1,5 @@
-﻿using Nemesys.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using Nemesys.Data;
 using Nemesys.Models;
 
 public class ReportsRepository : IReportsRepository
@@ -12,12 +13,12 @@ public class ReportsRepository : IReportsRepository
 
     public IEnumerable<Report> GetAllReports()
     {
-        return _context.Reports.ToList();
+        return _context.Reports.Include(r => r.Investigation).ToList();
     }
 
-    public Report GetReportById(int id)
+    public Report GetReportById(int reportId)
     {
-        return _context.Reports.Find(id);
+        return _context.Reports.Include(r => r.Investigation).FirstOrDefault(r => r.ReportID == reportId);
     }
 
     public void CreateReport(Report report)
@@ -32,9 +33,9 @@ public class ReportsRepository : IReportsRepository
         _context.SaveChanges();
     }
 
-    public void DeleteReport(int id)
+    public void DeleteReport(int reportId)
     {
-        var report = _context.Reports.Find(id);
+        var report = _context.Reports.FirstOrDefault(r => r.ReportID == reportId);
         if (report != null)
         {
             _context.Reports.Remove(report);

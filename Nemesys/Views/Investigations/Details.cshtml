@@ -1,0 +1,52 @@
+﻿@model Nemesys.ViewModels.InvestigationViewModel
+
+@{
+    ViewData["Title"] = "Investigation Details";
+}
+
+<h2>Investigation Details</h2>
+
+<div>
+    <h4>Investigation</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Description
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Description
+        </dd>
+        <dt class="col-sm-2">
+            Date of Action
+        </dt>
+        <dd class="col-sm-10">
+            @Model.DateOfAction
+        </dd>
+        <dt class="col-sm-2">
+            Investigator Details
+        </dt>
+        <dd class="col-sm-10">
+            @Model.InvestigatorDetails
+        </dd>
+        <dt class="col-sm-2">
+            Investigator Email
+        </dt>
+        <dd class="col-sm-10">
+            @Model.InvestigatorEmail
+        </dd>
+        <dt class="col-sm-2">
+            Investigator Phone
+        </dt>
+        <dd class="col-sm-10">
+            @Model.InvestigatorPhone
+        </dd>
+    </dl>
+</div>
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.InvestigationID" class="btn btn-warning">Edit</a>
+    <form asp-action="Delete" asp-route-id="@Model.InvestigationID" method="post" style="display:inline;">
+        <button type="submit" class="btn btn-danger">Delete</button>
+    </form>
+    <a asp-action="Index" asp-controller="Reports" class="btn btn-secondary">Back to Report</a>
+</div>

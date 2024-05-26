@@ -43,9 +43,19 @@ public class ReportsController : Controller
                     HazardDateTime = r.HazardDateTime,
                     HazardType = r.HazardType,
                     Description = r.Description,
-                    Status = "OPEN",
+                    Status = r.Status,
                     ImageUrl = r.ImageUrl,
-                    Upvotes = r.Upvotes
+                    Upvotes = r.Upvotes,
+                    Investigation = r.Investigation == null ? null : new InvestigationViewModel
+                    {
+                        InvestigationID = r.Investigation.InvestigationID,
+                        ReportID = r.Investigation.ReportID,
+                        Description = r.Investigation.Description,
+                        DateOfAction = r.Investigation.DateOfAction,
+                        InvestigatorDetails = r.Investigation.InvestigatorDetails,
+                        InvestigatorEmail = r.Investigation.InvestigatorEmail,
+                        InvestigatorPhone = r.Investigation.InvestigatorPhone
+                    }
                 }).ToList()
             };
 
@@ -77,7 +87,17 @@ public class ReportsController : Controller
                 Description = report.Description,
                 Status = report.Status,
                 ImageUrl = report.ImageUrl,
-                Upvotes = report.Upvotes
+                Upvotes = report.Upvotes,
+                Investigation = report.Investigation == null ? null : new InvestigationViewModel
+                {
+                    InvestigationID = report.Investigation.InvestigationID,
+                    ReportID = report.Investigation.ReportID,
+                    Description = report.Investigation.Description,
+                    DateOfAction = report.Investigation.DateOfAction,
+                    InvestigatorDetails = report.Investigation.InvestigatorDetails,
+                    InvestigatorEmail = report.Investigation.InvestigatorEmail,
+                    InvestigatorPhone = report.Investigation.InvestigatorPhone
+                }
             };
 
             return View(model);
@@ -89,6 +109,7 @@ public class ReportsController : Controller
         }
     }
 
+
     [Authorize(Roles = "investigator")]
     [HttpGet]
     public IActionResult Create()
@@ -96,7 +117,7 @@ public class ReportsController : Controller
         return View(new ReportViewModel());
     }
 
-    [Authorize(Roles = "investigator")]
+    [Authorize(Roles = "investigator, reporter")]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create([Bind("DateOfReport,Title,Location,HazardDateTime,HazardType,Description,ImageUrl,Upvotes")] ReportViewModel newReport)
@@ -122,7 +143,8 @@ public class ReportsController : Controller
                     Status = "OPEN",
                     ImageUrl = newReport.ImageUrl,
                     Upvotes = newReport.Upvotes,
-                    UserId = user.Id 
+                    UserId = user.Id,
+                    Investigation = null // Asegurarse de que la investigación sea nula al crear un nuevo reporte
                 };
 
                 _reportsRepository.CreateReport(report);
