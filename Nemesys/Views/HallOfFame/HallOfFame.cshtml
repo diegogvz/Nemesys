@@ -1,5 +1,31 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+@model Nemesys.ViewModels.UserHallOfFameViewModel
+
 @{
+    ViewData["Title"] = "Hall Of Fame";
 }
+
+<h1> Hall Of Fame </h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th> Rank</th> 
+            <th> User Name</th> 
+            <th> Total Reports</th> 
+            <th> Total Upvotes</th> 
+            <th> Ratio Upvotes/Reports</th> 
+        </tr>
+    </thead>
+
+    <tbody>
+    @for( int i =0; i < Model.Count(); i++){
+        <tr>
+            <td> @(i+1)</td>
+            <td> @ Model.ElementAt(i).UserName</td>
+            <td> @ Model.ElementAt(i).TotalReports</td>
+            <td> @ Model.ElementAt(i).TotalUpvotes</td>
+            <td> @ Model.ElementAt(i).getRatioUpvotesReport</td>
+        </tr>
+    }
+    </tbody>
+<tbody>
