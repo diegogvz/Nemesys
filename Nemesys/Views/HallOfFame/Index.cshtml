@@ -1,4 +1,4 @@
-@model Nemesys.ViewModels.UserHallOfFameViewModel
+@model IEnumerable<Nemesys.ViewModels.UserHallOfFameViewModel>
 
 @{
     ViewData["Title"] = "Hall Of Fame";
@@ -21,10 +21,10 @@
     @for( int i =0; i < Model.Count(); i++){
         <tr>
             <td> @(i+1)</td>
-            <td> @ Model.ElementAt(i).UserName</td>
-            <td> @ Model.ElementAt(i).TotalReports</td>
-            <td> @ Model.ElementAt(i).TotalUpvotes</td>
-            <td> @ Model.ElementAt(i).getRatioUpvotesReport</td>
+            <td> @Model.ElementAt(i).UserName</td>
+            <td> @Model.ElementAt(i).TotalReports</td>
+            <td> @Model.ElementAt(i).TotalUpvotes</td>
+            <td> @Model.ElementAt(i).getRatioUpvotesReport</td>
         </tr>
     }
     </tbody>
