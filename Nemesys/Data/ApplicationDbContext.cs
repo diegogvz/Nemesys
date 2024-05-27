@@ -11,6 +11,7 @@ namespace Nemesys.Data
 
         public DbSet<Report> Reports { get; set; }
         public DbSet<Investigation> Investigations { get; set; }
+        public DbSet<UserVote> UserVotes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -25,6 +26,10 @@ namespace Nemesys.Data
                 .HasOne(r => r.Investigation)
                 .WithOne(i => i.Report)
                 .HasForeignKey<Investigation>(i => i.ReportID);
+
+            modelBuilder.Entity<UserVote>()
+                .HasIndex(uv => new { uv.UserId, uv.ReportID })
+                .IsUnique();
 
             SeedRoles(modelBuilder);
             SeedAdminUser(modelBuilder);

@@ -2,24 +2,30 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Nemesys.Models;
+using Nemesys.Models.Interfaces;
 using Nemesys.ViewModels;
 using System;
 using System.Linq;
 using System.Net;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 
 public class ReportsController : Controller
 {
     private readonly IReportsRepository _reportsRepository;
     private readonly ILogger<ReportsController> _logger;
-    private readonly UserManager<User> _userManager;
+    private readonly UserManager<Nemesys.Models.User> _userManager;
+    private readonly IUserVoteRepository _userVoteRepository;
 
     public ReportsController(
         IReportsRepository reportsRepository,
+        IUserVoteRepository userVoteRepository,
         ILogger<ReportsController> logger,
-        UserManager<User> userManager)
+        UserManager<Nemesys.Models.User> userManager)
     {
         _reportsRepository = reportsRepository;
+        _userVoteRepository = userVoteRepository;
         _logger = logger;
         _userManager = userManager;
     }
@@ -46,6 +52,7 @@ public class ReportsController : Controller
                     Status = r.Status,
                     ImageUrl = r.ImageUrl,
                     Upvotes = r.Upvotes,
+                    HasVoted = _userVoteRepository.GetUserVote(User.FindFirstValue(ClaimTypes.NameIdentifier), r.ReportID) != null,
                     Investigation = r.Investigation == null ? null : new InvestigationViewModel
                     {
                         InvestigationID = r.Investigation.InvestigationID,
@@ -110,7 +117,7 @@ public class ReportsController : Controller
     }
 
 
-    [Authorize(Roles = "investigator")]
+    [Authorize(Roles = "investigator,reporter")]
     [HttpGet]
     public IActionResult Create()
     {
@@ -257,7 +264,7 @@ public class ReportsController : Controller
             }
 
             _reportsRepository.DeleteReport(id);
-            return RedirectToAction("Index");
+            return RedirectToAction("MyReports");
         }
         catch (Exception ex)
         {
@@ -269,4 +276,68 @@ public class ReportsController : Controller
     {
         return View("AccessDenied", (object)message);
     }
+
+    [HttpPost]
+    [Authorize]
+    public IActionResult Upvote(int id)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var userVote = _userVoteRepository.GetUserVote(userId, id);
+
+        if (userVote == null)
+        {
+            // User has not voted yet, add vote
+            var report = _reportsRepository.GetReportById(id);
+            if (report != null)
+            {
+                report.Upvotes += 1;
+                _reportsRepository.UpdateReport(report);
+                _userVoteRepository.AddUserVote(new UserVote { UserId = userId, ReportID = id });
+            }
+        }
+        else
+        {
+            // User has already voted, remove vote
+            var report = _reportsRepository.GetReportById(id);
+            if (report != null)
+            {
+                report.Upvotes -= 1;
+                _reportsRepository.UpdateReport(report);
+                _userVoteRepository.RemoveUserVote(userVote);
+            }
+        }
+
+        return RedirectToAction("Index");
+    }
+
+    [Authorize(Roles = "investigator, reporter")]
+    public IActionResult MyReports()
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var reports = _reportsRepository.GetAllReports().Where(r => r.UserId == userId);
+        var reportViewModels = reports.Select(r => new ReportViewModel
+        {
+            Id = r.ReportID,
+            DateOfReport = r.DateOfReport,
+            Title = r.Title,
+            Location = r.Location,
+            HazardDateTime = r.HazardDateTime,
+            HazardType = r.HazardType,
+            Description = r.Description,
+            Status = r.Status,
+            ImageUrl = r.ImageUrl,
+            Upvotes = r.Upvotes,
+            HasVoted = _userVoteRepository.GetUserVote(userId, r.ReportID) != null
+        }).ToList();
+
+        var model = new ReportListViewModel
+        {
+            Reports = reportViewModels,
+            TotalEntries = reportViewModels.Count
+        };
+
+        return View(model);
+    }
+
+
 }
