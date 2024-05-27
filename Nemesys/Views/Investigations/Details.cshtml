@@ -23,17 +23,20 @@
             @Model.DateOfAction
         </dd>
         <dt class="col-sm-2">
-            Investigator Details
-        </dt>
-        <dd class="col-sm-10">
-            @Model.InvestigatorDetails
-        </dd>
-        <dt class="col-sm-2">
             Investigator Email
         </dt>
         <dd class="col-sm-10">
             @Model.InvestigatorEmail
         </dd>
+        @if (!string.IsNullOrEmpty(Model.InvestigatorPhone))
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.InvestigatorPhone)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.InvestigatorPhone)
+            </dd>
+        }
         <dt class="col-sm-2">
             Investigator Phone
         </dt>

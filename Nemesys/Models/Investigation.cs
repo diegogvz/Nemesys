@@ -7,9 +7,8 @@
         public Report Report { get; set; }
         public string Description { get; set; }
         public DateTime DateOfAction { get; set; }
-        public string InvestigatorDetails { get; set; }
         public string InvestigatorEmail { get; set; }
-        public string InvestigatorPhone { get; set; }
+        public string? InvestigatorPhone { get; set; }
     }
 
 }

@@ -8,8 +8,9 @@
     using System;
     using System.Linq;
     using System.Threading.Tasks;
+    using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
+    using User = Models.User;
 
-    
     public class InvestigationsController : Controller
     {
         private readonly IInvestigationsRepository _investigationsRepository;
@@ -63,8 +64,7 @@
                     ReportID = model.ReportID,
                     Description = model.Description,
                     DateOfAction = DateTime.Now,
-                    InvestigatorDetails = user.UserName, // Ajuste aquí
-                    InvestigatorEmail = user.Email, // Ajuste aquí
+                    InvestigatorEmail = user.Email,
                     InvestigatorPhone = model.InvestigatorPhone
                 };
 
@@ -88,7 +88,7 @@
 
         [Authorize(Roles = "investigator")]
         [HttpGet]
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
             var investigation = _investigationsRepository.GetInvestigationById(id);
             if (investigation == null)
@@ -102,10 +102,9 @@
                 ReportID = investigation.ReportID,
                 Description = investigation.Description,
                 DateOfAction = investigation.DateOfAction,
-                InvestigatorDetails = investigation.InvestigatorDetails,
                 InvestigatorEmail = investigation.InvestigatorEmail,
                 InvestigatorPhone = investigation.InvestigatorPhone,
-                Status = investigation.Report.Status // Asegúrate de inicializar el campo Status
+                Status = investigation.Report.Status,
             };
 
             return View(model);
@@ -127,7 +126,6 @@
                 investigation.Description = model.Description;
                 investigation.DateOfAction = model.DateOfAction;
                 investigation.InvestigatorPhone = model.InvestigatorPhone;
-                investigation.InvestigatorDetails = model.InvestigatorDetails;
                 investigation.InvestigatorEmail = model.InvestigatorEmail;
 
                 // Actualizar el status del reporte asociado

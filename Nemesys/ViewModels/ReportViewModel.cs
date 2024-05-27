@@ -16,5 +16,6 @@
         public string UserEmail { get; set; }
 
         public InvestigationViewModel? Investigation { get; set; }
+        public bool IsInvestigationOwner { get; set; }
     }
 }

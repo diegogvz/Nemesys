@@ -59,7 +59,6 @@ public class ReportsController : Controller
                         ReportID = r.Investigation.ReportID,
                         Description = r.Investigation.Description,
                         DateOfAction = r.Investigation.DateOfAction,
-                        InvestigatorDetails = r.Investigation.InvestigatorDetails,
                         InvestigatorEmail = r.Investigation.InvestigatorEmail,
                         InvestigatorPhone = r.Investigation.InvestigatorPhone
                     }
@@ -75,7 +74,7 @@ public class ReportsController : Controller
         }
     }
 
-    public IActionResult Details(int id)
+    public async Task<IActionResult> Details(int id)
     {
         try
         {
@@ -86,6 +85,8 @@ public class ReportsController : Controller
             var user = _userManager.FindByIdAsync(report.UserId).Result;
             if (user == null)
                 return NotFound();
+
+            var currentUser = await _userManager.GetUserAsync(User);
 
 
             var model = new ReportViewModel
@@ -107,10 +108,10 @@ public class ReportsController : Controller
                     ReportID = report.Investigation.ReportID,
                     Description = report.Investigation.Description,
                     DateOfAction = report.Investigation.DateOfAction,
-                    InvestigatorDetails = report.Investigation.InvestigatorDetails,
                     InvestigatorEmail = report.Investigation.InvestigatorEmail,
-                    InvestigatorPhone = report.Investigation.InvestigatorPhone
-                }
+                    InvestigatorPhone = report.Investigation.InvestigatorPhone,
+                },
+                IsInvestigationOwner = report.Investigation != null && report.Investigation.InvestigatorEmail == currentUser.Email
             };
 
             return View(model);

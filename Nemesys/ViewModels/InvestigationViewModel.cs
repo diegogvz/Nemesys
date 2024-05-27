@@ -20,12 +20,10 @@
         [Required]
         public string Status { get; set; }  
 
-        public string InvestigatorDetails { get; set; }
-
         public string InvestigatorEmail { get; set; }
 
         [Phone]
-        public string InvestigatorPhone { get; set; }
+        public string? InvestigatorPhone { get; set; }
     }
 
 }
