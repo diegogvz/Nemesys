@@ -13,6 +13,7 @@
         public string ImageUrl { get; set; }
         public int Upvotes { get; set; } = 0;
         public bool HasVoted { get; set; }
+        public string UserEmail { get; set; }
 
         public InvestigationViewModel? Investigation { get; set; }
     }

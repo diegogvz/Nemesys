@@ -62,7 +62,7 @@
                 {
                     ReportID = model.ReportID,
                     Description = model.Description,
-                    DateOfAction = model.DateOfAction,
+                    DateOfAction = DateTime.Now,
                     InvestigatorDetails = user.UserName, // Ajuste aquí
                     InvestigatorEmail = user.Email, // Ajuste aquí
                     InvestigatorPhone = model.InvestigatorPhone

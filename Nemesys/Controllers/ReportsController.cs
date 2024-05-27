@@ -83,6 +83,11 @@ public class ReportsController : Controller
             if (report == null)
                 return NotFound();
 
+            var user = _userManager.FindByIdAsync(report.UserId).Result;
+            if (user == null)
+                return NotFound();
+
+
             var model = new ReportViewModel
             {
                 Id = report.ReportID,
@@ -95,6 +100,7 @@ public class ReportsController : Controller
                 Status = report.Status,
                 ImageUrl = report.ImageUrl,
                 Upvotes = report.Upvotes,
+                UserEmail = user.Email,
                 Investigation = report.Investigation == null ? null : new InvestigationViewModel
                 {
                     InvestigationID = report.Investigation.InvestigationID,
@@ -141,7 +147,7 @@ public class ReportsController : Controller
 
                 var report = new Report
                 {
-                    DateOfReport = newReport.DateOfReport,
+                    DateOfReport = DateTime.Now,
                     Title = newReport.Title,
                     Location = newReport.Location,
                     HazardDateTime = newReport.HazardDateTime,
