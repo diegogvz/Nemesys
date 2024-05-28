@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Nemesys.Models;
 using Nemesys.Models.Interfaces;
+using Nemesys.Models.Services;
 using Nemesys.ViewModels;
 using System;
 using System.Linq;
@@ -17,16 +18,19 @@ public class ReportsController : Controller
     private readonly ILogger<ReportsController> _logger;
     private readonly UserManager<Nemesys.Models.User> _userManager;
     private readonly IUserVoteRepository _userVoteRepository;
+    private readonly IEmailService _emailService;
 
     public ReportsController(
         IReportsRepository reportsRepository,
         IUserVoteRepository userVoteRepository,
         ILogger<ReportsController> logger,
+        IEmailService emailService,
         UserManager<Nemesys.Models.User> userManager)
     {
         _reportsRepository = reportsRepository;
         _userVoteRepository = userVoteRepository;
         _logger = logger;
+        _emailService = emailService;
         _userManager = userManager;
     }
 
@@ -162,6 +166,14 @@ public class ReportsController : Controller
                 };
 
                 _reportsRepository.CreateReport(report);
+
+                var investigators = await _userManager.GetUsersInRoleAsync("investigator");
+                foreach (var investigator in investigators)
+                {
+                    var message = $"NEW REPORT \n Created:\n \n Title: {report.Title}\n Location: {report.Location}\n Description: {report.Description}";
+                    await _emailService.SendEmailAsync(investigator.Email, "New Report Created", message);
+                }
+
                 return RedirectToAction("Index");
             }
 

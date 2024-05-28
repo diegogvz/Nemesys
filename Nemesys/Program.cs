@@ -5,6 +5,7 @@ using Nemesys.Models;
 using Nemesys.Data;
 using Nemesys.Models.Repositories;
 using Nemesys.Models.Interfaces;
+using Nemesys.Models.Services;
 
 namespace Nemesys
 {
@@ -45,6 +46,7 @@ namespace Nemesys
             builder.Services.AddScoped<IReportsRepository, ReportsRepository>();
             builder.Services.AddScoped<IInvestigationsRepository, InvestigationsRepository>(); // Registro del servicio
             builder.Services.AddScoped<IUserVoteRepository, UserVoteRepository>();
+            builder.Services.AddTransient<IEmailService, EmailService>();
 
             builder.Services.AddControllersWithViews();
 

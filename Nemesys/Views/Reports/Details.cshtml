@@ -113,6 +113,13 @@
                 <form asp-action="Delete" asp-controller="Investigations" asp-route-id="@Model.Investigation.InvestigationID" method="post" style="display:inline;">
                     <button type="submit" class="btn btn-danger">Delete Investigation</button>
                 </form>
+                <a asp-action="Index" class="btn btn-primary">Back to List</a>
+            </div>
+        }
+        else
+        {
+            <div>
+                <a asp-action="Index" class="btn btn-primary">Back to List</a>
             </div>
         }
     </div>
@@ -121,8 +128,7 @@ else
 {
     <div>
         <a asp-action="Create" asp-controller="Investigations" asp-route-reportId="@Model.Id" class="btn btn-primary">Add Investigation</a>
+        <a asp-action="Index" class="btn btn-primary">Back to List</a>
     </div>
 }
-<div>
-    <a asp-action="Index" class="btn btn-primary">Back to List</a>
-</div>
+
