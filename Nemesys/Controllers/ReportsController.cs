@@ -19,19 +19,22 @@ public class ReportsController : Controller
     private readonly UserManager<Nemesys.Models.User> _userManager;
     private readonly IUserVoteRepository _userVoteRepository;
     private readonly IEmailService _emailService;
+    private readonly IWebHostEnvironment _webHostEnvironment;
 
     public ReportsController(
         IReportsRepository reportsRepository,
         IUserVoteRepository userVoteRepository,
         ILogger<ReportsController> logger,
         IEmailService emailService,
-        UserManager<Nemesys.Models.User> userManager)
+        UserManager<Nemesys.Models.User> userManager,
+        IWebHostEnvironment webHostEnvironment)
     {
         _reportsRepository = reportsRepository;
         _userVoteRepository = userVoteRepository;
         _logger = logger;
         _emailService = emailService;
         _userManager = userManager;
+        _webHostEnvironment = webHostEnvironment;
     }
 
     public IActionResult Index()
@@ -128,17 +131,15 @@ public class ReportsController : Controller
     }
 
 
-    [Authorize(Roles = "investigator,reporter")]
     [HttpGet]
     public IActionResult Create()
     {
         return View(new ReportViewModel());
     }
 
-    [Authorize(Roles = "investigator, reporter")]
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("DateOfReport,Title,Location,HazardDateTime,HazardType,Description,ImageUrl,Upvotes")] ReportViewModel newReport)
+    public async Task<IActionResult> Create([Bind("DateOfReport,Title,Location,HazardDateTime,HazardType,Description,ImageToUpload,Upvotes")] ReportViewModel newReport)
     {
         try
         {
@@ -150,6 +151,18 @@ public class ReportsController : Controller
                     return Unauthorized();
                 }
 
+                string uniqueFileName = null;
+                if (newReport.ImageToUpload != null)
+                {
+                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images/reports");
+                    uniqueFileName = Guid.NewGuid().ToString() + "_" + newReport.ImageToUpload.FileName;
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await newReport.ImageToUpload.CopyToAsync(fileStream);
+                    }
+                }
+
                 var report = new Report
                 {
                     DateOfReport = DateTime.Now,
@@ -159,14 +172,15 @@ public class ReportsController : Controller
                     HazardType = newReport.HazardType,
                     Description = newReport.Description,
                     Status = "OPEN",
-                    ImageUrl = newReport.ImageUrl,
+                    ImageUrl = uniqueFileName != null ? "/images/reports/" + uniqueFileName : null,
                     Upvotes = newReport.Upvotes,
                     UserId = user.Id,
-                    Investigation = null // Asegurarse de que la investigación sea nula al crear un nuevo reporte
+                    Investigation = null
                 };
 
                 _reportsRepository.CreateReport(report);
 
+                // Optional: Send email to investigators
                 var investigators = await _userManager.GetUsersInRoleAsync("investigator");
                 foreach (var investigator in investigators)
                 {
@@ -230,7 +244,7 @@ public class ReportsController : Controller
     [Authorize]
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Edit(ReportViewModel updatedReport)
+    public async Task<IActionResult> Edit(ReportViewModel updatedReport)
     {
         try
         {
@@ -240,6 +254,31 @@ public class ReportsController : Controller
                 if (report == null)
                     return NotFound();
 
+                string uniqueFileName = report.ImageUrl;
+
+                if (updatedReport.ImageToUpload != null)
+                {
+                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images/reports");
+                    uniqueFileName = Guid.NewGuid().ToString() + "_" + updatedReport.ImageToUpload.FileName;
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await updatedReport.ImageToUpload.CopyToAsync(fileStream);
+                    }
+
+                    // Borrar la imagen anterior del servidor si existe y es diferente de la nueva imagen
+                    if (!string.IsNullOrEmpty(report.ImageUrl))
+                    {
+                        string oldFilePath = Path.Combine(_webHostEnvironment.WebRootPath, report.ImageUrl.TrimStart('/'));
+                        if (System.IO.File.Exists(oldFilePath))
+                        {
+                            System.IO.File.Delete(oldFilePath);
+                        }
+                    }
+
+                    uniqueFileName = "/images/reports/" + uniqueFileName; 
+                }
+
                 report.DateOfReport = updatedReport.DateOfReport;
                 report.Title = updatedReport.Title;
                 report.Location = updatedReport.Location;
@@ -247,7 +286,7 @@ public class ReportsController : Controller
                 report.HazardType = updatedReport.HazardType;
                 report.Description = updatedReport.Description;
                 report.Status = updatedReport.Status;
-                report.ImageUrl = updatedReport.ImageUrl;
+                report.ImageUrl = uniqueFileName; 
                 report.Upvotes = updatedReport.Upvotes;
 
                 _reportsRepository.UpdateReport(report);
@@ -262,6 +301,7 @@ public class ReportsController : Controller
             return View("Error");
         }
     }
+
 
     [Authorize]
     [HttpPost]

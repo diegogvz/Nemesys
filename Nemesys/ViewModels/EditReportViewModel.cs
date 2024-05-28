@@ -35,8 +35,10 @@ namespace Nemesys.ViewModels
         [Display(Name = "Status")]
         public string Status { get; set; }
 
-        [Display(Name = "Image URL")]
-        public string ImageUrl { get; set; }
+        public string? ImageUrl { get; set; }
+
+        [Display(Name = "Image")]
+        public IFormFile? ImageToUpload { get; set; } 
 
         [Required]
         public int Upvotes { get; set; }
