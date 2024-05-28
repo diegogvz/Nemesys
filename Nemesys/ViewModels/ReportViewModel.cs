@@ -10,7 +10,8 @@
         public string HazardType { get; set; }
         public string Description { get; set; }
         public string Status { get; set; } = "OPEN";
-        public string ImageUrl { get; set; }
+        public string? ImageUrl { get; set; }
+        public IFormFile? ImageToUpload { get; set; } 
         public int Upvotes { get; set; } = 0;
         public bool HasVoted { get; set; }
         public string? UserEmail { get; set; }
