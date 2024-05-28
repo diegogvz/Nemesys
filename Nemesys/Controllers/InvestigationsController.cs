@@ -158,6 +158,30 @@
             return RedirectToAction("Details", "Reports", new { id = investigation.ReportID });
         }
 
+        [Authorize(Roles = "investigator")]
+        public async Task<IActionResult> MyInvestigations()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+
+            var investigations = _investigationsRepository.GetInvestigationsByInvestigatorId(user.Email);
+
+            var model = investigations.Select(i => new InvestigationViewModel
+            {
+                InvestigationID = i.InvestigationID,
+                ReportID = i.ReportID,
+                Description = i.Description,
+                DateOfAction = i.DateOfAction,
+                InvestigatorEmail = i.InvestigatorEmail,
+                InvestigatorPhone = i.InvestigatorPhone
+            }).ToList();
+
+            return View(model);
+        }
+
     }
 
 }

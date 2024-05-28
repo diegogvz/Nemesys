@@ -1,0 +1,36 @@
+﻿@model IEnumerable<Nemesys.ViewModels.InvestigationViewModel>
+
+@{
+    ViewData["Title"] = "My Investigations";
+}
+
+<h1>My Investigations</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Description</th>
+            <th>Date of Action</th>
+            <th>Report </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var investigation in Model)
+        {
+            <tr>
+                <td>@investigation.Description</td>
+                <td>@investigation.DateOfAction.ToString("dd/MM/yyyy HH:mm")</td>
+                <td>@investigation.ReportID</td>
+                <td>
+                    <a asp-controller="Reports" asp-action="Details" asp-route-id="@investigation.ReportID" class="btn btn-primary">Details</a>
+                    <a asp-action="Edit" asp-route-id="@investigation.InvestigationID" class="btn btn-warning">Edit</a>
+                    <form asp-action="Delete" asp-route-id="@investigation.InvestigationID" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this investigation?');">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

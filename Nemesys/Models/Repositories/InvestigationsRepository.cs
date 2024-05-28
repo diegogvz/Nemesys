@@ -43,6 +43,14 @@ namespace Nemesys.Models.Repositories
                 _context.SaveChanges();
             }
         }
+
+        public IEnumerable<Investigation> GetInvestigationsByInvestigatorId(string investigatorId)
+        {
+            return _context.Investigations
+                .Include(i => i.Report)
+                .Where(i => i.InvestigatorEmail == investigatorId)
+                .ToList();
+        }
     }
 
 

@@ -7,4 +7,5 @@ public interface IInvestigationsRepository
     void CreateInvestigation(Investigation investigation);
     void DeleteInvestigation(int investigationId);
     void UpdateInvestigation(Investigation investigation);
+    IEnumerable<Investigation> GetInvestigationsByInvestigatorId(string investigatorId);
 }
