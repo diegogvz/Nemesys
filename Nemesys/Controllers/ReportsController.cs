@@ -287,7 +287,6 @@ public class ReportsController : Controller
                 report.Description = updatedReport.Description;
                 report.Status = updatedReport.Status;
                 report.ImageUrl = uniqueFileName; 
-                report.Upvotes = updatedReport.Upvotes;
 
                 _reportsRepository.UpdateReport(report);
                 return RedirectToAction("Index");
