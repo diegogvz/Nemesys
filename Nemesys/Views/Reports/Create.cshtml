@@ -4,115 +4,122 @@
     ViewData["Title"] = "Create Report";
 }
 
-<h2>Create Report</h2>
+<head>
+    <title>Nemesys</title>
+    <link rel="stylesheet" href="~/wwwroot/css/site.css">
+</head>
+<body>
 
-<form asp-action="Create" method="post" enctype="multipart/form-data" role="form">
-    <div asp-validation-summary="All" class="text-danger"></div>
+    <h2>Create Report</h2>
 
-    <div class="form-group">
-        <label asp-for="Title" class="col-md-2"></label>
-        <div class="col-md-5">
-            <input asp-for="Title" class="form-control" />
-            <span asp-validation-for="Title" class="text-danger"></span>
+    <form asp-action="Create" method="post" enctype="multipart/form-data" role="form">
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <div class="form-group">
+            <label asp-for="Title" class="col-md-2"></label>
+            <div class="col-md-5">
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        <label asp-for="Location" class="col-md-2"></label>
-    </div>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDPgY4Uts96p3RhVzubmWllZwzaMAukXAg&callback=initMap"></script>
-    <style>
-        #map {
-            height: 500px;
-            width: 80%;
-        }
-    </style>    
-	<div id="map"></div>
-	<input type="hidden" id="Location" name="Location" />
-    <script>
-        var map;
-        var marker;
-
-        function initMap() {
-            map = new google.maps.Map(document.getElementById('map'), {
-                center: { lat: 35.901889, lng: 14.484030 },
-                zoom: 16
-            });
-
-            map.addListener('click', function (e) {
-                if (marker) {
-                    marker.setPosition(e.latLng);
-                } else {
-                    marker = new google.maps.Marker({
-                        position: e.latLng,
-                        map: map
-                    });
-                }
-
-                document.getElementById('Location').value = e.latLng.lat() + ', ' + e.latLng.lng();
-            });
-
-            document.getElementById('selectLocation').addEventListener('click', function () {
-                if (marker) {
-                    map.setCenter(marker.getPosition());
-                    map.setZoom(15);
-                }
-            });
-        }
-
-        function saveLocation(event) {
-            var location = document.getElementById('Location').value;
-            if (location) {
-                // Aquí puedes agregar la lógica para guardar la ubicación antes de enviar el formulario
-                console.log('Ubicación guardada:', location);
-            } else {
-                event.preventDefault(); // Evita que se envíe el formulario si no hay ubicación seleccionada
-                alert('Selecciona una ubicación en el mapa antes de crear el reporte.');
+        <div class="form-group">
+            <label asp-for="Location" class="col-md-2"></label>
+        </div>
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDPgY4Uts96p3RhVzubmWllZwzaMAukXAg&callback=initMap"></script>
+        <style>
+            #map {
+                height: 500px;
+                width: 80%;
             }
-        }
-    </script>
+        </style>    
+	    <div id="map"></div>
+	    <input type="hidden" id="Location" name="Location" />
+        <script>
+            var map;
+            var marker;
 
-    <div class="form-group">
-        <label asp-for="HazardType" class="col-md-2"></label>
-        <div class="col-md-5">
-            <input asp-for="HazardType" class="form-control" />
-            <span asp-validation-for="HazardType" class="text-danger"></span>
+            function initMap() {
+                map = new google.maps.Map(document.getElementById('map'), {
+                    center: { lat: 35.901889, lng: 14.484030 },
+                    zoom: 16
+                });
+
+                map.addListener('click', function (e) {
+                    if (marker) {
+                        marker.setPosition(e.latLng);
+                    } else {
+                        marker = new google.maps.Marker({
+                            position: e.latLng,
+                            map: map
+                        });
+                    }
+
+                    document.getElementById('Location').value = e.latLng.lat() + ', ' + e.latLng.lng();
+                });
+
+                document.getElementById('selectLocation').addEventListener('click', function () {
+                    if (marker) {
+                        map.setCenter(marker.getPosition());
+                        map.setZoom(15);
+                    }
+                });
+            }
+
+            function saveLocation(event) {
+                var location = document.getElementById('Location').value;
+                if (location) {
+                    // Aquí puedes agregar la lógica para guardar la ubicación antes de enviar el formulario
+                    console.log('Ubicación guardada:', location);
+                } else {
+                    event.preventDefault(); // Evita que se envíe el formulario si no hay ubicación seleccionada
+                    alert('Selecciona una ubicación en el mapa antes de crear el reporte.');
+                }
+            }
+        </script>
+
+        <div class="form-group">
+            <label asp-for="HazardType" class="col-md-2"></label>
+            <div class="col-md-5">
+                <input asp-for="HazardType" class="form-control" />
+                <span asp-validation-for="HazardType" class="text-danger"></span>
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        <label asp-for="HazardDateTime" class="col-md-2"></label>
-        <div class="col-md-5">
-            <input asp-for="HazardDateTime" class="form-control" type="datetime-local" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" />
-            <span asp-validation-for="HazardDateTime" class="text-danger"></span>
+        <div class="form-group">
+            <label asp-for="HazardDateTime" class="col-md-2"></label>
+            <div class="col-md-5">
+                <input asp-for="HazardDateTime" class="form-control" type="datetime-local" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" />
+                <span asp-validation-for="HazardDateTime" class="text-danger"></span>
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        <label asp-for="Description" class="col-md-2"></label>
-        <div class="col-md-5">
-            <textarea asp-for="Description" class="form-control"></textarea>
-            <span asp-validation-for="Description" class="text-danger"></span>
+        <div class="form-group">
+            <label asp-for="Description" class="col-md-2"></label>
+            <div class="col-md-5">
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        <label asp-for="ImageToUpload" class="col-md-2"></label>
-        <div class="col-md-5">
-            <input type="file" asp-for="ImageToUpload" class="form-control" />
-            <span asp-validation-for="ImageToUpload" class="text-danger"></span>
+        <div class="form-group">
+            <label asp-for="ImageToUpload" class="col-md-2"></label>
+            <div class="col-md-5">
+                <input type="file" asp-for="ImageToUpload" class="form-control" />
+                <span asp-validation-for="ImageToUpload" class="text-danger"></span>
+            </div>
         </div>
-    </div>
 
-    <input type="hidden" asp-for="Investigation" />
-
-    <div class="form-group">
-        <div class="col-md-5">
-            <input type="submit" class="btn btn-primary" value="Create Report" />
-            <a asp-controller="Reports" asp-action="Index" class="btn btn-outline-secondary">Back to list</a>
+        <input type="hidden" asp-for="Investigation" />
+        <br>
+        <div class="form-group">
+            <div class="col-md-5">
+                <input type="submit" class="btn btn-primary" value="Create Report" />
+                <a asp-controller="Reports" asp-action="Index" class="btn btn-outline-secondary">Back to list</a>
+            </div>
         </div>
-    </div>
-</form>
+    </form>
+</body>
 
 @section Scripts {
     @{

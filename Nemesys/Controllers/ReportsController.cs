@@ -280,10 +280,15 @@ public class ReportsController : Controller
 
                     uniqueFileName = "/images/reports/" + uniqueFileName; 
                 }
+                string uniqueLocation = report.Location;
+                if(updatedReport.Location!= null)
+                {
+                    uniqueLocation = updatedReport.Location;
+                } 
 
                 report.DateOfReport = updatedReport.DateOfReport;
                 report.Title = updatedReport.Title;
-                report.Location = updatedReport.Location;
+                report.Location = uniqueLocation;
                 report.HazardDateTime = updatedReport.HazardDateTime;
                 report.HazardType = updatedReport.HazardType;
                 report.Description = updatedReport.Description;

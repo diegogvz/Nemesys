@@ -15,9 +15,8 @@ namespace Nemesys.ViewModels
         [Display(Name = "Title")]
         public string Title { get; set; }
 
-        [Required]
         [Display(Name = "Location")]
-        public string Location { get; set; }
+        public string? Location { get; set; }
 
         [Required]
         [Display(Name = "Hazard Date and Time")]
