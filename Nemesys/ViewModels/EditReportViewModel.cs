@@ -1,46 +1,29 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Nemesys.ViewModels
 {
     public class EditReportViewModel
     {
-        public int ReportID { get; set; }
-
-        [Required]
+        public int Id { get; set; }
         [Display(Name = "Date of Report")]
         public DateTime DateOfReport { get; set; }
-
-        [Required]
-        [Display(Name = "Title")]
         public string Title { get; set; }
-
         [Display(Name = "Location")]
         public string? Location { get; set; }
-
-        [Required]
-        [Display(Name = "Hazard Date and Time")]
+        [Display(Name = "Hazard Date")]
         public DateTime HazardDateTime { get; set; }
-
-        [Required]
         [Display(Name = "Hazard Type")]
         public string HazardType { get; set; }
-
-        [Required]
-        [Display(Name = "Description")]
         public string Description { get; set; }
-
-        [Required]
-        [Display(Name = "Status")]
-        public string Status { get; set; }
-
+        public string Status { get; set; } = "OPEN";
         public string? ImageUrl { get; set; }
+        [Display(Name = "Photo of the issue")]
+        public IFormFile? ImageToUpload { get; set; }
+        public int Upvotes { get; set; } = 0;
+        public bool HasVoted { get; set; }
+        public string? UserEmail { get; set; }
 
-        [Display(Name = "Image")]
-        public IFormFile? ImageToUpload { get; set; } 
-
-        [Required]
-        public int Upvotes { get; set; }
+        public InvestigationViewModel? Investigation { get; set; }
+        public bool IsInvestigationOwner { get; set; }
     }
 }
-

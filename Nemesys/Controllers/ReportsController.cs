@@ -220,7 +220,7 @@ public class ReportsController : Controller
             }
 
 
-            var model = new ReportViewModel
+            var model = new EditReportViewModel
             {
                 Id = report.ReportID,
                 DateOfReport = report.DateOfReport,
@@ -246,7 +246,7 @@ public class ReportsController : Controller
     [Authorize]
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(ReportViewModel updatedReport)
+    public async Task<IActionResult> Edit(EditReportViewModel updatedReport)
     {
         try
         {
