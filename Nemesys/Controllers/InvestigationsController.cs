@@ -30,6 +30,7 @@
             _userManager = userManager;
         }
 
+        [Authorize(Roles = "investigator")]
         public IActionResult Create(int reportId)
         {
             var report = _reportsRepository.GetReportById(reportId);

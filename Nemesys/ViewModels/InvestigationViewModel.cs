@@ -15,6 +15,7 @@
         public string Description { get; set; }
 
         [Required]
+        [Display(Name = "Date of Action")]
         public DateTime DateOfAction { get; set; }
 
         [Required]
@@ -22,6 +23,7 @@
 
         public string InvestigatorEmail { get; set; }
 
+        [Display(Name = "Investigator's Phone")]
         [Phone]
         public string? InvestigatorPhone { get; set; }
     }
