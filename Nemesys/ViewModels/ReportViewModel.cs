@@ -8,8 +8,9 @@ namespace Nemesys.ViewModels
         [Display(Name = "Date of Report")]
         public DateTime DateOfReport { get; set; }
         public string Title { get; set; }
+        [Display(Name = "Location")]
         public string Location { get; set; }
-        [Display(Name = "Hazard Date Time")]
+        [Display(Name = "Hazard Date")]
         public DateTime HazardDateTime { get; set; }
         [Display(Name = "Hazard Type")]
         public string HazardType { get; set; }

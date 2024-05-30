@@ -132,12 +132,14 @@ public class ReportsController : Controller
 
 
     [HttpGet]
+    [Authorize]
     public IActionResult Create()
     {
         return View(new ReportViewModel());
     }
 
     [HttpPost]
+    [Authorize]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create([Bind("DateOfReport,Title,Location,HazardDateTime,HazardType,Description,ImageToUpload,Upvotes")] ReportViewModel newReport)
     {
